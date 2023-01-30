@@ -5,29 +5,27 @@ category: layering
 order: 8
 ---
 
-It is generally encouraged to create tfvars files in the `app/stacks/MOD/tfvars` folder. Terraspace considers additional lookup paths though.  It's similar to how `LOAD_PATH` works. The lookup paths are:
+You can create tfvars files in either the `app/stacks/MOD/tfvars` or `config/stacks/MOD/tfvars` folders. Terraspace considers both lookup paths.  It's similar to how `LOAD_PATH` works. The lookup paths are:
 
-    seed/tfvars/stacks/MOD
-    seed/tfvars/modules/MOD
+    config/stacks/MOD/tfvars
     app/stacks/MOD/tfvars
 
 ## Additional Seed Structure
 
-Here's an example folder structure. The tfvars files should mainly be in `app/stacks/MOD/tfvars` folders.  However, you can create one-off `seed/tfvars` folders that mirror the modules and stack structure.
+Here's an example folder structure. The app and config folder structure mirror each other.
 
     ├── app
-    │   ├── modules
-    │   │   ├── instance
-    │   │   └── vpc
     │   └── stacks
     │       └── network
     │           └── tfvars
     │               └── dev.tfvars
-    └── seed
-        └── tfvars
-            └── modules
-                └── instance
+    └── config
+        └── stacks
+            └── network
+                └── tfvars
                     └── dev.tfvars
+
+The tfvars files in the config folder take higher precedence than the app folder. This allows stacks from vendors to contain defaults but overriden by your project.
 
 ## One-Off Purposes
 
@@ -40,9 +38,9 @@ It is strongly recommended to **not** define tfvars in `app/modules/*/tfvars`. T
 
 Remember modules are like "functions" and tfvars are like "parameters" passed to them. Putting the tfvars files within the same module directory would be akin to hard coding parameters.
 
-## Why tfvars in Stacks?
+## Stacks vs Modules
 
-To understand why terraspace encourages creating your tfvars within the `app/stack/MOD/tfvars` folder, it is key to understand the difference between `app/modules` and `app/stacks`. The difference is how you use them.
+Stacks are just modules.  The difference is how you use them.
 
 * Stacks are meant to be used to group together modules. It makes sense to include business-specific logic here.
 * Whereas modules are smaller pieces that are meant to be reused. It does not make sense to include business-specific logic in here.
